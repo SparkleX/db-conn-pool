@@ -1,4 +1,6 @@
 coverage/
+.vscode/
 test/
 .nyc_output/
 .vscode/
+*.spec.ts

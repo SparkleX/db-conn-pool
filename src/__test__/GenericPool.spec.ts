@@ -1,7 +1,7 @@
-import { Driver, Connection, DataSource, GenericPool, Result } from "db-conn";
+import { Driver, Connection, DataSource, Result } from "db-conn";
+import { GenericPool, GenericPoolConfig } from "..";
 
-
-const poolConfig: any = {
+const poolConfig: GenericPoolConfig = {
 	min: 2,
     max: 2
 }
