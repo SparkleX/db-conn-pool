@@ -27,7 +27,8 @@
 	"keywords": [
 		"jdbc",
 		"database",
-		"pool"
+		"pool",
+		"db-conn"
 	],
 	"homepage": "https://github.com/SparkleX/db-conn-pool"
 }
