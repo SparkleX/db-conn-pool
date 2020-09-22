@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test on borrow fail: mock execute 1`] = `
+Array [
+  Array [
+    "select xxx",
+  ],
+  Array [
+    "select xxx",
+  ],
+]
+`;
+
+exports[`test on borrow sql: mock execute 1`] = `
+Array [
+  Array [
+    "select 1",
+  ],
+]
+`;

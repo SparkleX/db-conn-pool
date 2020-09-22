@@ -4,3 +4,4 @@ test/
 .nyc_output/
 .vscode/
 *.spec.ts
+**/__test__

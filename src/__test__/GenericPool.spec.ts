@@ -5,38 +5,34 @@ const poolConfig: GenericPoolConfig = {
 	min: 2,
     max: 2
 }
-class TestConnection implements Connection {
-	execute(sql: string, params?: object | any[]): Promise<Result> {
-		throw new Error("Method not implemented.");
-	}
-	executeQuery(sql: string, params?: object | any[]): Promise<object[]> {
-		throw new Error("Method not implemented.");
-	}
-	setAutoCommit(autoCommit: boolean): Promise<void> {
-		throw new Error("Method not implemented.");
-	}
-	commit(): Promise<void> {
-		throw new Error("Method not implemented.");
-	}
-	rollback(): Promise<void> {
-		throw new Error("Method not implemented.");
-	}
-	public async close(): Promise<void> {
-		
-	}
-}
+
 const mockClose = jest.fn();
-TestConnection.prototype.close = mockClose;
+const mockExecute = jest.fn();
 
-class TestDriver implements Driver {
-	async connect(config: any): Promise<Connection> {
-		return new TestConnection();
-	}
+const mockConnect = jest.fn();
+const driver = {
+	connect: mockConnect
 }
 
+const oConnection = {
+	close:mockClose,
+	execute:mockExecute,
+}
+const oConnection2 = {
+	close:mockClose,
+	execute:mockExecute,
+}
+beforeEach(() => {
+	mockConnect.mockClear();
+	mockClose.mockClear();
+	mockExecute.mockClear();
+});
 
 test("connection pool", async () => {
-	const driver = new TestDriver();
+	
+	mockConnect
+	.mockResolvedValueOnce(oConnection)
+	.mockResolvedValueOnce(oConnection2);
 	const pool: DataSource = new GenericPool(driver, null, poolConfig);
 	const conn1 = await pool.getConnection();
 	expect((pool as any).pool._availableObjects.length).toStrictEqual(1);	
@@ -49,4 +45,36 @@ test("connection pool", async () => {
 	expect(mockClose.mock.calls.length).toBe(0);
 	await pool.close();
 	expect(mockClose.mock.calls.length).toBe(2);
+});
+
+
+test("test on borrow without sql", async () => {
+	poolConfig.testOnBorrow = true;
+	try {
+		const pool: DataSource = new GenericPool(driver, null, poolConfig);
+		fail('should throw exception');
+	} catch(err) {
+
+	}
+});
+
+test("test on borrow sql", async () => {
+	mockConnect.mockResolvedValueOnce(oConnection);
+	poolConfig.testOnBorrow = true;
+	poolConfig.testOnBorrowSql = "select 1";
+	const pool: DataSource = new GenericPool(driver, null, poolConfig);	
+	const conn = await pool.getConnection();
+	expect(mockExecute.mock.calls).toMatchSnapshot("mock execute");
+});
+
+test("test on borrow fail", async () => {
+	mockConnect.mockResolvedValue(oConnection);
+	mockExecute
+		.mockRejectedValueOnce(null)
+		.mockReturnValueOnce(null);	
+	poolConfig.testOnBorrow = true;
+	poolConfig.testOnBorrowSql = "select xxx";
+	const pool: DataSource = new GenericPool(driver, null, poolConfig);
+	const conn = await pool.getConnection();
+	expect(mockExecute.mock.calls).toMatchSnapshot("mock execute");
 });

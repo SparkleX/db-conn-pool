@@ -1,19 +1,21 @@
 {
 	"name": "db-conn-pool",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Generic Pool support of db-conn",
 	"main": "dist/index.js",
 	"scripts": {
 		"prebuild": "npm run clean",
 		"build": "tsc",
 		"clean": "rimraf dist",
-		"test": "jest"
+		"test": "jest",
+		"test:ss":"jest -u"
 	},
 	"author": "Sun, Xufei",
 	"license": "MIT",
 	"dependencies": {
 		"db-conn": "^0.1.0",
-		"generic-pool": "^3.7.1"
+		"generic-pool": "^3.7.1",
+		"@types/generic-pool": "^3.1.9"
 	},
 	"devDependencies": {
 		"@types/generic-pool": "^3.1.9",
@@ -21,7 +23,7 @@
 		"@types/node": "^12.12.12",
 		"jest": "^26.3.0",
 		"rimraf": "^3.0.2",
-		"ts-jest": "^26.1.4",
+		"ts-jest": "^26.2.0",
 		"typescript": "^3.6.4"
 	},
 	"keywords": [

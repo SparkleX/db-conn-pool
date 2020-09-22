@@ -6,7 +6,7 @@ Example
 const dbConfig = {
 
 }
-const poolConfig: any = {
+const poolConfig = {
     min: 2,
     max: 5
 }
@@ -21,4 +21,17 @@ await pool.close();
 
 ---
 
+Test on Borrow
+```
+const dbConfig = {}
+const poolConfig = {
+    min: 2,
+    max: 5
+	testOnBorrow: true;
+	testOnBorrowSql: "select 1";
+}
+const driver = new XXXDriver();
+const pool: DataSource = new GenericPool(driver, dbConfig, poolConfig);
+```
 
+---
